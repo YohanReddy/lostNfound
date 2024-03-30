@@ -1,11 +1,12 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
+import { Octicons } from '@expo/vector-icons';
 
 const tabScreens = [
-  { name: 'index', title: 'Home' },
-  { name: 'two', title: 'Messages' },
-  { name: 'three', title: 'Keepers' },
-  { name: 'four', title: 'Profile' },
+  { name: 'index', title: 'Home', icon: 'home' },
+  { name: 'two', title: 'Messages', icon: 'inbox' },
+  { name: 'three', title: 'Keepers', icon: 'people' },
+  { name: 'four', title: 'Profile', icon: 'person' },
 ];
 
 export default function TabLayout() {
@@ -15,7 +16,13 @@ export default function TabLayout() {
         <Tabs.Screen
           key={screen.name}
           name={screen.name}
-          options={{ headerShown: false, title: screen.title }}
+          options={{ headerShown: true, title: screen.title,             
+          tabBarIcon: ({ color, size }) => ( 
+          <Octicons
+            name={screen.icon}
+            size={size}
+            color={color}
+          /> )}}
         />
       ))}
     </Tabs>

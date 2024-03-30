@@ -1,32 +1,41 @@
-// Inbox.js
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { Link } from 'expo-router';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 
-const messageData = [
-    { id: 1, sender: 'John', subject: 'Meeting Reminder', date: 'March 25, 2024', content: 'Don\'t forget the meeting tomorrow.' },
-    { id: 2, sender: 'Alice', subject: 'Project Update', date: 'March 24, 2024', content: 'Here\'s the latest progress on our project.' },
-    // Add more messages as needed
+// Sample data for users and messages
+const users = [
+    { id: 1, name: 'John Doe', profileImage: 'https://via.placeholder.com/150', lastMessage: 'Hello!', lastMessageTime: '11:30 AM' },
+    { id: 2, name: 'Alice Smith', profileImage: 'https://via.placeholder.com/150', lastMessage: 'Hi there!', lastMessageTime: 'Yesterday' },
+    { id: 3, name: 'Bob Johnson', profileImage: 'https://via.placeholder.com/150', lastMessage: 'Good morning', lastMessageTime: '3 days ago' },
 ];
 
-const Inbox = () => {
-    const handlePress = (id) => {
-        Link.push(`/message/${id}`);
-    }
+const MessagesScreen = ({ navigation }) => {
+
+    const renderUserItem = ({ item }) => (
+        <TouchableOpacity
+            className="flex-row items-center p-4 border-b border-gray-200"
+            onPress={() => navigation.navigate('Chat', { user: item })}
+        >
+            <Image source={{ uri: item.profileImage }} className="w-12 h-12 rounded-full" />
+            <View className="flex-1 ml-4">
+                <Text className="text-lg font-semibold">{item.name}</Text>
+                <Text className="text-sm text-gray-500">{item.lastMessage}</Text>
+            </View>
+            <View className="flex flex-col items-end">
+                <Text className="text-sm text-gray-500">{item.lastMessageTime}</Text>
+            </View>
+        </TouchableOpacity>
+    );
 
     return (
-        <View>
-            {messageData.map(message => (
-                <Pressable key={message.id} onPress={() => handlePress(message.id)}>
-                    <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-                        <Text style={{ fontWeight: 'bold' }}>{message.sender}</Text>
-                        <Text>{message.subject}</Text>
-                        <Text style={{ color: '#888' }}>{message.date}</Text>
-                    </View>
-                </Pressable>
-            ))}
+        <View className="flex-1 bg-white">
+            <FlatList
+                data={users}
+                renderItem={renderUserItem}
+                keyExtractor={item => item.id.toString()}
+                className="mt-10"
+            />
         </View>
     );
 };
 
-export default Inbox;
+export default MessagesScreen;
